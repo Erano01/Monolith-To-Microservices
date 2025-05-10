@@ -3,3 +3,10 @@ spring:
     compose:
       file: Monolith-Demo/docker-compose.yml
       enabled: false
+  datasource:
+    url: 'jdbc:mysql:/localhost/test'
+    username: 'root'
+    password: 'secret'
+  jpa:
+    hibernate:
+      ddl-auto: update
