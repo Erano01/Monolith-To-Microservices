@@ -1,0 +1,5 @@
+spring:
+  docker:
+    compose:
+      file: Monolith-Demo/docker-compose.yml
+      enabled: false
