@@ -16,7 +16,8 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/api/users")
+    //@GetMapping("/api/users")
+    @RequestMapping(value = "/api/users", method = RequestMethod.GET)
     public ResponseEntity<List<User>> getAllUsers(){
         return ResponseEntity.ok(userService.fetchAllUsers());
     }
