@@ -1,10 +1,8 @@
 package me.erano.com;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,12 +17,27 @@ public class UserController {
     }
 
     @GetMapping("/api/users")
-    public List<User> getAllUsers(){
-        return userService.fetchAllUsers();
+    public ResponseEntity<List<User>> getAllUsers(){
+        return ResponseEntity.ok(userService.fetchAllUsers());
     }
     @PostMapping("/api/users")
-    public String createUser(@RequestBody User user){
+    public ResponseEntity<String> createUser(@RequestBody User user){
         userService.addUser(user);
-        return "User added successfully";
+        return ResponseEntity.ok("User added successfully");
+    }
+    @GetMapping("/api/users/{userId}")
+    public ResponseEntity<User> getUserById(@PathVariable Long userId){
+        return userService.getUserById(userId)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+    @PutMapping("/api/users/{userId}")
+    public ResponseEntity<String> updateUser(@PathVariable Long userId, @RequestBody User updatedUser){
+        boolean updated = userService.updateUser(userId, updatedUser);
+        if(updated){
+            return ResponseEntity.ok("User updated successfully");
+        }else{
+            return ResponseEntity.notFound().build();
+        }
     }
 }
