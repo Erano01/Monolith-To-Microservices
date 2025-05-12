@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/users")
 public class UserController {
 
     //put final for required argument in constructor
@@ -16,23 +17,23 @@ public class UserController {
         this.userService = userService;
     }
 
-    //@GetMapping("/api/users")
-    @RequestMapping(value = "/api/users", method = RequestMethod.GET)
+    @GetMapping
+    //@RequestMapping(value = "/api/users", method = RequestMethod.GET)
     public ResponseEntity<List<User>> getAllUsers(){
         return ResponseEntity.ok(userService.fetchAllUsers());
     }
-    @PostMapping("/api/users")
+    @PostMapping
     public ResponseEntity<String> createUser(@RequestBody User user){
         userService.addUser(user);
         return ResponseEntity.ok("User added successfully");
     }
-    @GetMapping("/api/users/{userId}")
+    @GetMapping("/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable Long userId){
         return userService.getUserById(userId)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
-    @PutMapping("/api/users/{userId}")
+    @PutMapping("/{userId}")
     public ResponseEntity<String> updateUser(@PathVariable Long userId, @RequestBody User updatedUser){
         boolean updated = userService.updateUser(userId, updatedUser);
         if(updated){
