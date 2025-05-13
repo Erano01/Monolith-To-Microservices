@@ -6,6 +6,8 @@ import me.erano.com.model.Product;
 import me.erano.com.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -14,6 +16,14 @@ public class ProductService {
 
     public ProductService(ProductRepository productRepository){
         this.productRepository = productRepository;
+    }
+
+    public List<ProductResponse> getAllProducts(){
+        return productRepository
+                .findByActiveTrue()
+                .stream()
+                .map(this::mapToProductResponse)
+                .collect(Collectors.toList());
     }
 
     public ProductResponse createProductResponse(ProductRequest productRequest){
