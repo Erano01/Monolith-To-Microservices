@@ -24,4 +24,14 @@ public class ProductController {
         return new ResponseEntity<ProductResponse>(productService.createProductResponse(productRequest), HttpStatus.CREATED);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductResponse> updateProduct(
+            @PathVariable Long id,
+            @RequestBody ProductRequest productRequest){
+        return productService
+                .updateProduct(id, productRequest)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
 }
