@@ -1,6 +1,7 @@
-package me.erano.com;
+package me.erano.com.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import me.erano.com.model.User;
+import me.erano.com.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

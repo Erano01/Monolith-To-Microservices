@@ -1,37 +1,33 @@
-package me.erano.com;
+package me.erano.com.service;
 
+import me.erano.com.repository.UserRepository;
+import me.erano.com.model.User;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserService {
-    private List<User> userList = new ArrayList<User>();
-    private Long nextId = 1L;
-
+    private UserRepository userRepository;
+    public UserService(UserRepository userRepository){
+        this.userRepository = userRepository;
+    }
     public List<User> fetchAllUsers(){
-      return userList;
+        return userRepository.findAll();
     }
     public void addUser(User user){
-        user.setId(nextId++);
-        userList.add(user);
+        userRepository.save(user);
     }
     public Optional<User> getUserById(Long userId){
-        return userList
-                .stream()
-                .filter(user -> user.getId().equals(userId))
-                .findFirst();
+        return userRepository.findById(userId);
     }
     public boolean updateUser(Long id, User updatedUser){
-        return userList
-                .stream()
-                .filter(user -> user.getId().equals(id))
-                .findFirst()
+        return userRepository.findById(id)
                 .map(existingUser -> {
                     existingUser.setFirstName(updatedUser.getFirstName());
                     existingUser.setLastName(updatedUser.getLastName());
+                    userRepository.save(existingUser);
                     return true;
                 })
                 .orElse(false);

@@ -1,12 +1,17 @@
 spring:
+  application:
+    name: Monolith-Demo
+  h2:
+    console:
+      enabled: true
+
   docker:
     compose:
       file: Monolith-Demo/docker-compose.yml
       enabled: false
   datasource:
-    url: 'jdbc:mysql:/localhost/test'
-    username: 'root'
-    password: 'secret'
+    url: jdbc:h2:mem:test
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
+    show-sql: true
