@@ -1,5 +1,7 @@
 package me.erano.com.controller;
 
+import me.erano.com.dto.UserRequest;
+import me.erano.com.dto.UserResponse;
 import me.erano.com.model.User;
 import me.erano.com.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -20,23 +22,24 @@ public class UserController {
 
     @GetMapping
     //@RequestMapping(value = "/api/users", method = RequestMethod.GET)
-    public ResponseEntity<List<User>> getAllUsers(){
+    public ResponseEntity<List<UserResponse>> getAllUsers(){
         return ResponseEntity.ok(userService.fetchAllUsers());
     }
+
     @PostMapping
-    public ResponseEntity<String> createUser(@RequestBody User user){
-        userService.addUser(user);
+    public ResponseEntity<String> createUser(@RequestBody UserRequest userRequest){
+        userService.addUser(userRequest);
         return ResponseEntity.ok("User added successfully");
     }
     @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserById(@PathVariable Long userId){
+    public ResponseEntity<UserResponse> getUserById(@PathVariable Long userId){
         return userService.getUserById(userId)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
     @PutMapping("/{userId}")
-    public ResponseEntity<String> updateUser(@PathVariable Long userId, @RequestBody User updatedUser){
-        boolean updated = userService.updateUser(userId, updatedUser);
+    public ResponseEntity<String> updateUser(@PathVariable Long userId, @RequestBody UserRequest updateUserRequest){
+        boolean updated = userService.updateUser(userId, updateUserRequest);
         if(updated){
             return ResponseEntity.ok("User updated successfully");
         }else{
