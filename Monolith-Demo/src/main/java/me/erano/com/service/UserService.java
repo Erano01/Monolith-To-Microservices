@@ -26,61 +26,62 @@ public class UserService {
                 .collect(Collectors.toList());
     }
     public void addUser(UserRequest userRequest){
-        userRepository.save(updateUser(new User(),userRequest));
+        User user = new User();
+        updateUserFromRequest(user, userRequest);
+        userRepository.save(user);
     }
     public Optional<UserResponse> getUserById(Long userId){
         return userRepository
                 .findById(userId)
                 .map(this::mapToUserResponse);
     }
-    public boolean updateUser(Long id, UserRequest updateUserRequest){
+    public boolean updateUser(Long id, UserRequest updatedUserRequest) {
         return userRepository.findById(id)
                 .map(existingUser -> {
-                    userRepository.save(updateUser(existingUser,updateUserRequest));
+                    updateUserFromRequest(existingUser, updatedUserRequest);
+                    userRepository.save(existingUser);
                     return true;
-                })
-                .orElse(false);
+                }).orElse(false);
     }
 
     //private methods
 
+    private void updateUserFromRequest(User user, UserRequest userRequest) {
+        user.setFirstName(userRequest.getFirstName());
+        user.setLastName(userRequest.getLastName());
+        user.setEmail(userRequest.getEmail());
+        user.setPhone(userRequest.getPhone());
+
+        if (userRequest.getAddressDto() != null) {
+            Address address = new Address();
+            address.setStreet(userRequest.getAddressDto().getStreet());
+            address.setState(userRequest.getAddressDto().getState());
+            address.setZipCode(userRequest.getAddressDto().getZipCode());
+            address.setCity(userRequest.getAddressDto().getCity());
+            address.setCountry(userRequest.getAddressDto().getCountry());
+            user.setAddress(address);
+        }
+    }
+
     private UserResponse mapToUserResponse(User user){
-        return new UserResponse(
-                String.valueOf(user.getId()),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getEmail(),
-                user.getPhone(),
-                user.getRole(),
-                mapToAddressDto(user.getAddress())
-        );
-    }
-    private AddressDto mapToAddressDto(Address address){
-        return new AddressDto(
-                address.getStreet(),
-                address.getCity(),
-                address.getState(),
-                address.getZipCode(),
-                address.getCountry()
-        );
-    }
-    private User updateUser(User user,UserRequest userRequest){
-        User updatedUser = user;
-        updatedUser.setFirstName(userRequest.getFirstName());
-        updatedUser.setLastName(userRequest.getLastName());
-        updatedUser.setEmail(userRequest.getEmail());
-        updatedUser.setPhone(userRequest.getPhone());
-        updatedUser.setAddress(updateAddress(user.getAddress(),userRequest.getAddressDto()));
-        return updatedUser;
-    }
-    private Address updateAddress(Address address,AddressDto addressDto){
-        Address updatedAddress = address;
-        updatedAddress.setStreet(addressDto.getStreet());
-        updatedAddress.setCity(addressDto.getCity());
-        updatedAddress.setState(addressDto.getState());
-        updatedAddress.setZipCode(addressDto.getZipCode());
-        updatedAddress.setCountry(addressDto.getCountry());
-        return updatedAddress;
+        UserResponse response = new UserResponse();
+        response.setId(String.valueOf(user.getId()));
+        response.setFirstName(user.getFirstName());
+        response.setLastName(user.getLastName());
+        response.setEmail(user.getEmail());
+        response.setPhone(user.getPhone());
+        response.setRole(user.getRole());
+
+        if (user.getAddress() != null) {
+            AddressDto addressDTO = new AddressDto();
+            addressDTO.setStreet(user.getAddress().getStreet());
+            addressDTO.setCity(user.getAddress().getCity());
+            addressDTO.setState(user.getAddress().getState());
+            addressDTO.setCountry(user.getAddress().getCountry());
+            addressDTO.setZipCode(user.getAddress().getZipCode());
+            response.setAddressDto(addressDTO);
+        }
+        return response;
     }
 
 }
