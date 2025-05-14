@@ -18,6 +18,13 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
+    public List<ProductResponse> searchProducts(String keyword){
+        return productRepository.searchProducts(keyword)
+                .stream()
+                .map(this::mapToProductResponse)
+                .collect(Collectors.toList());
+    }
+
     public List<ProductResponse> getAllProducts(){
         return productRepository
                 .findByActiveTrue()
@@ -41,6 +48,17 @@ public class ProductService {
                     return mapToProductResponse(savedProduct);
         });
     }
+
+    public boolean deleteProduct(Long id){
+        return productRepository
+                .findById(id)
+                .map(product -> {
+                    product.setActive(false);
+                    productRepository.save(product);
+                    return true;
+                }).orElse(false);
+    }
+
 
     private Product updateProductFromRequest(Product product, ProductRequest productRequest){
         product.setName(productRequest.getName());
