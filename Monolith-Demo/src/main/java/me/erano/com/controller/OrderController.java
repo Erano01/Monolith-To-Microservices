@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/orders")
-@Transactional
 public class OrderController {
 
     private final OrderService orderService;
@@ -23,9 +22,10 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<OrderResponse> createOrder(
-            @RequestHeader("X-User-ID") String userId){
-        OrderResponse order = orderService.createOrder(userId);
-        return new ResponseEntity<OrderResponse>(order, HttpStatus.CREATED);
+            @RequestHeader("X-User-ID") String userId) {
+        return orderService.createOrder(userId)
+                .map(orderResponse -> new ResponseEntity<>(orderResponse, HttpStatus.CREATED))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
 }
