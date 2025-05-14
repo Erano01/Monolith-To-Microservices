@@ -13,18 +13,26 @@ public class CartController {
 
     private final CartService cartItemService;
 
-    public CartController(CartService cartItemService){
+    public CartController(CartService cartItemService) {
         this.cartItemService = cartItemService;
     }
 
     @PostMapping
     public ResponseEntity<String> addToCart(
             @RequestHeader("X-User-ID") String userId,
-            @RequestBody CartItemRequest request){
-        if(!cartItemService.addToCart(userId, request)){
+            @RequestBody CartItemRequest request) {
+        if (!cartItemService.addToCart(userId, request)) {
             return ResponseEntity.badRequest().body("Product Out of Stock or User not found or Product not found");
         }
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @DeleteMapping("/items/{productId}")
+    public ResponseEntity<String> removeFromCart(
+            @RequestHeader("X-User-ID") String userId,
+            @PathVariable Long productId) {
+        boolean deleted = cartItemService.deleteItemFromCart(userId,productId);
+        return deleted ? ResponseEntity.noContent().build()
+                : ResponseEntity.notFound().build();
+    }
 }
