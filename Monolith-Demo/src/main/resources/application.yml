@@ -20,4 +20,22 @@ management:
   endpoints:
     web:
       exposure:
-        include: '*'
+        include: beans, health
+#        include: '*'
+  endpoint:
+    health:
+      show-details: always
+    shutdown:
+      enabled: true
+  info:
+    env:
+      enabled: true
+
+server:
+  shutdown: graceful
+
+info:
+  app:
+    name: MonolithApp
+    description: App Built By Us
+    version: 1.0.0
