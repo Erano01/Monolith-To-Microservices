@@ -3,8 +3,8 @@ spring:
     name: Monolith-Demo
   datasource:
     url: jdbc:postgresql://localhost:5432/monolithdb
-    username: erano
-    password: 12345
+    username: root
+    password: root
   jpa:
     database: POSTGRESQL
     show-sql: true
