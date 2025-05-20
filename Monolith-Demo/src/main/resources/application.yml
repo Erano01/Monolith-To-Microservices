@@ -15,7 +15,7 @@ spring:
   docker:
     compose:
       file: Monolith-Demo/docker-compose.yml
-      enabled: false
+      enabled: true
 
 management:
   endpoints:
