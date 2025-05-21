@@ -12,6 +12,10 @@
 
     <artifactId>Microservice-Demo</artifactId>
     <packaging>pom</packaging>
+    <modules>
+        <module>user-api</module>
+        <module>order-api</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>24</maven.compiler.source>
