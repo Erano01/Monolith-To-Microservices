@@ -11,7 +11,6 @@
     <modules>
         <module>Monolith-Demo</module>
         <module>Microservice-Demo</module>
-        <module>Microservice-Demo/product-api</module>
     </modules>
 
     <properties>
