@@ -16,7 +16,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userId;
+    private String userId;
     private BigDecimal amount;
 
     @Enumerated(EnumType.STRING)
@@ -33,7 +33,7 @@ public class Order {
     public Order() {
     }
 
-    public Order(Long userId, BigDecimal amount, OrderStatus status, List<OrderItem> items, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Order(String userId, BigDecimal amount, OrderStatus status, List<OrderItem> items, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.userId = userId;
         this.amount = amount;
         this.status = status;
@@ -70,11 +70,11 @@ public class Order {
         this.id = id;
     }
 
-    public Long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

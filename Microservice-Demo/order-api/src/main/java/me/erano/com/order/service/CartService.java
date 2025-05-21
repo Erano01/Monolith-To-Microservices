@@ -63,8 +63,8 @@ public class CartService {
         return true;
     }
 
-    public boolean deleteItemFromCart(String userId, Long productId) {
-        CartItem cartItem = cartItemRepository.findByUserIdAndProductId(userId,String.valueOf(productId));
+    public boolean deleteItemFromCart(String userId, String productId) {
+        CartItem cartItem = cartItemRepository.findByUserIdAndProductId(userId,productId);
         if (cartItem != null) {
             cartItemRepository.delete(cartItem);
             return true;
@@ -73,17 +73,10 @@ public class CartService {
     }
 
     public List<CartItem> getCart(String userId) {
-        /*return userRepository
-                .findById(Long.valueOf(userId))
-                .map(cartItemRepository::findByUserId)
-                .orElseGet(List::of);*/
-        return List.of();
+        return cartItemRepository.findByUserId(userId);
     }
 
     public void clearCart(String userId) {
-        /*userRepository
-                .findById(Long.valueOf(userId))
-                .ifPresent(cartItemRepository::deleteByUserId);
-*/
+        cartItemRepository.deleteByUserId(userId);
     }
 }

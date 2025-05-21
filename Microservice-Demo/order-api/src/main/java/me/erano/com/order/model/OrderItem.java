@@ -10,7 +10,7 @@ public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long productId;
+    private String productId;
     private Integer quantity;
     private BigDecimal unitPrice;
 
@@ -21,7 +21,7 @@ public class OrderItem {
     public OrderItem() {
     }
 
-    public OrderItem(Long id, Long productId, Integer quantity, BigDecimal unitPrice, Order order) {
+    public OrderItem(Long id, String productId, Integer quantity, BigDecimal unitPrice, Order order) {
         this.id = id;
         this.productId = productId;
         this.quantity = quantity;
@@ -55,11 +55,11 @@ public class OrderItem {
         this.id = id;
     }
 
-    public Long getProductId() {
+    public String getProductId() {
         return productId;
     }
 
-    public void setProductId(Long productId) {
+    public void setProductId(String productId) {
         this.productId = productId;
     }
 
