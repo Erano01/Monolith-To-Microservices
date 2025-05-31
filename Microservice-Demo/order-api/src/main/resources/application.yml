@@ -6,6 +6,7 @@ spring:
       enabled: true
   datasource:
     url: jdbc:h2:mem:test
+    ## url: jdbc:postgresql://localhost:5432/order
   jpa:
     show-sql: true
     hibernate:

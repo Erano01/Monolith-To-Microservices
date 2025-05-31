@@ -17,15 +17,8 @@ import java.util.stream.Collectors;
 @Service
 public class OrderService {
 
-    //private final UserRepository userRepository;
     private final CartService cartService;
     private final OrderRepository orderRepository;
-
-    /*public OrderService(UserRepository userRepository, CartService cartService, OrderRepository orderRepository) {
-        this.userRepository = userRepository;
-        this.cartService = cartService;
-        this.orderRepository = orderRepository;
-    }*/
 
     public OrderService(CartService cartService, OrderRepository orderRepository) {
         this.cartService = cartService;

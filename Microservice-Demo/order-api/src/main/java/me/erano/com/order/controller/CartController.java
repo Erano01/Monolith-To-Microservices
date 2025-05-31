@@ -12,12 +12,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/cart")
 public class CartController {
-
-    private final CartService cartItemService;
     private final CartService cartService;
 
-    public CartController(CartService cartItemService, CartService cartService) {
-        this.cartItemService = cartItemService;
+    public CartController(CartService cartService) {
         this.cartService = cartService;
     }
 
@@ -25,7 +22,7 @@ public class CartController {
     public ResponseEntity<String> addToCart(
             @RequestHeader("X-User-ID") String userId,
             @RequestBody CartItemRequest request) {
-        if (!cartItemService.addToCart(userId, request)) {
+        if (!cartService.addToCart(userId, request)) {
             return ResponseEntity.badRequest().body("Product Out of Stock or User not found or Product not found");
         }
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -35,11 +32,13 @@ public class CartController {
     public ResponseEntity<String> removeFromCart(
             @RequestHeader("X-User-ID") String userId,
             @PathVariable String productId) {
-        boolean deleted = cartItemService.deleteItemFromCart(userId,productId);
+        boolean deleted = cartService.deleteItemFromCart(userId,productId);
         return deleted ? ResponseEntity.noContent().build()
                 : ResponseEntity.notFound().build();
     }
 
+    //postmanda key value girmen lazım misal:
+    // X-User-ID -> 67d533476a55cf5c8124a59c
     @GetMapping
     public ResponseEntity<List<CartItem>> getCart(
             @RequestHeader("X-User-ID")String userId){

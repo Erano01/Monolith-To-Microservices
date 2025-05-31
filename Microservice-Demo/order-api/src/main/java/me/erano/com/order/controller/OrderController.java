@@ -19,12 +19,14 @@ public class OrderController {
         this.orderService = orderService;
     }
 
+    //daha öncesinde cart oluşturman lazım, ve postmanda bu requesti yaparken headerlarda şunu belirtmen lazım:
+    // X-User-ID -> 67d533476a55cf5c8124a59c
     @PostMapping
     public ResponseEntity<OrderResponse> createOrder(
             @RequestHeader("X-User-ID") String userId) {
         return orderService.createOrder(userId)
                 .map(orderResponse -> new ResponseEntity<>(orderResponse, HttpStatus.CREATED))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+                .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
 }

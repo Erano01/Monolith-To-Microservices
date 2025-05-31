@@ -14,15 +14,7 @@ import java.util.Optional;
 @Transactional
 public class CartService {
 
-    //private final ProductRepository productRepository;
     private final CartItemRepository cartItemRepository;
-    //private final UserRepository userRepository;
-
-    /*public CartService(ProductRepository productRepository, CartItemRepository cartItemRepository, UserRepository userRepository) {
-        this.productRepository = productRepository;
-        this.cartItemRepository = cartItemRepository;
-        this.userRepository = userRepository;
-    }*/
 
     public CartService(CartItemRepository cartItemRepository) {
         this.cartItemRepository = cartItemRepository;
@@ -56,10 +48,9 @@ public class CartService {
             cartItem.setUserId(userId);
             cartItem.setProductId(request.getProductId());
             cartItem.setQuantity(request.getQuantity());
-            cartItem.setPrice(BigDecimal.valueOf(request.getQuantity()));
+            cartItem.setPrice(BigDecimal.valueOf(1000.00));
             cartItemRepository.save(cartItem);
         }
-
         return true;
     }
 
